@@ -1,0 +1,41 @@
+<html>
+    <head>
+        <title>
+            Testing socket.io
+        </title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+    </head>
+    <body>
+        <h1 id="socketio"> not connected </h1>
+        <button id="button">
+            click me to retrieve data from database
+        </button>
+        <div id="display">
+
+        </div>
+
+        <!-- to retrieve data from database -->
+        <script>
+            
+             var socket = io();
+            socket.on('connect',function(){
+                document.getElementById("socketio").innerHTML="socket connected";
+            });
+            socket.on('showrows',function(rows){
+                $('#button').click(function(){
+                    var html='';
+                for(var i=0;i<rows.length;i++){
+                    html += rows[i].Name + ' ' + rows[i].Comapny + ' ' + rows[i].phone_no + ' ' + rows[i].email_id + '<br>';
+                }
+                document.getElementById("display").innerHTML = html;
+                console.log(rows);
+            });
+    });
+        </script>
+
+   
+
+       
+    </body>
+</html>

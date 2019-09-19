@@ -1,0 +1,83 @@
+<html>
+    <head>
+        <title>
+            Testing socket.io
+        </title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+    </head>
+    <body>
+        <h1>
+            Contact form
+        </h1>
+        <div>
+                <form id="frm1">
+                   name:<br>
+                    <input type="text" name="Name" value="Donald" id="username">
+                    <br>
+                    company:<br>
+                    <input type="text" name="Comapny" value="Duck" id="Company">
+                    <br>
+                    Phone<br>
+                    <input type="text" name="phone_no" id="phoneNumber" value="789" required>
+                    <br>
+                    email:<br>
+                    <input type="text" name="email" value="1998tanvi" id="mailID">
+                    <br>
+                    <br>
+                    <!-- <input type="submit" value="Submit" > -->
+                   
+
+                  </form>
+
+                  <button onclick="myFunction2()">
+                        click me to view data in console
+                </button>
+                <p id="demo"></p>
+        </div>
+        <h1 id="socketio"> not connected </h1>
+        <button id="button">
+            click me to retrieve data from database
+        </button>
+        <div id="display">
+
+        </div>
+
+        <!-- to retrieve data from database -->
+        <script>
+            
+             var socket = io();
+            socket.on('connect',function(){
+                document.getElementById("socketio").innerHTML="socket connected";
+            });
+            socket.on('showrows',function(rows){
+                $('#button').click(function(){
+                    var html='';
+                for(var i=0;i<rows.length;i++){
+                    html += rows[i].Name + ' ' + rows[i].Comapny + ' ' + rows[i].phone_no + ' ' + rows[i].email_id + '<br>';
+                }
+                document.getElementById("display").innerHTML = html;
+                console.log(rows);
+            });
+    });
+        </script>
+
+        <!-- to write data into datatbase -->
+
+        <script>
+                function myFunction2() {
+                    var name = document.getElementById("username").value;
+                    var company = document.getElementById("Company").value;
+                    var mail = document.getElementById("mailID").value;
+                    var phone_string = document.getElementById("phoneNumber").value;
+                    var phone = Number(phone_string);
+                    document.getElementById("demo").innerHTML = name + company + phone + mail;
+                    console.log(typeof(phone));
+                    console.log(typeof(name));
+                    console.log(typeof(mail));
+                    
+                    socket.emit('ehlo', { name: name, company: company, phone: phone, mail: mail  }); 
+         }
+        </script>
+    </body>
+</html>
